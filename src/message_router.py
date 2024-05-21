@@ -37,6 +37,8 @@ def route_im_message(ctx: Context, conf: Config, event: MessageReceiveEvent) -> 
     # ignore request if event_type is not im.message.receive_v1
     if event.header.event_type != "im.message.receive_v1":
         return
+    if event.event.message.chat_type == "group":
+        return
     feishu_message_logger.info("Feishu message: %s", attr.asdict(event.event))
     # if message content text starts with /, then it is a command
     json_content = json.loads(event.event.message.content)
